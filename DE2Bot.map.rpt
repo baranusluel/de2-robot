@@ -1,6 +1,6 @@
 Analysis & Synthesis report for DE2Bot
-Tue Oct 30 13:00:15 2018
-Quartus II Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Full Version
+Wed Nov 07 18:45:52 2018
+Quartus II Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
 
 
 ---------------------
@@ -29,7 +29,7 @@ Quartus II Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Full Version
  21. General Register Statistics
  22. Inverted Register Statistics
  23. Multiplexer Restructuring Statistics (Restructuring Performed)
- 24. Source assignments for SCOMP:inst8|altsyncram:MEMORY|altsyncram_8ut3:auto_generated
+ 24. Source assignments for SCOMP:inst8|altsyncram:MEMORY|altsyncram_pss3:auto_generated
  25. Source assignments for IR_RCVR:inst44|ir_lpm_counter0:inst18|lpm_counter:lpm_counter_component
  26. Source assignments for IR_RCVR:inst44|ir_lpm_counter1:inst24|lpm_counter:lpm_counter_component
  27. Source assignments for IR_RCVR:inst44|ir_lpm_counter0:inst16|lpm_counter:lpm_counter_component
@@ -172,24 +172,24 @@ applicable agreement for further details.
 
 
 
-+------------------------------------------------------------------------------------+
-; Analysis & Synthesis Summary                                                       ;
-+------------------------------------+-----------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Tue Oct 30 13:00:09 2018         ;
-; Quartus II Version                 ; 9.1 Build 350 03/24/2010 SP 2 SJ Full Version ;
-; Revision Name                      ; DE2Bot                                        ;
-; Top-level Entity Name              ; DE2bot                                        ;
-; Family                             ; Cyclone II                                    ;
-; Total logic elements               ; 5,770                                         ;
-;     Total combinational functions  ; 4,994                                         ;
-;     Dedicated logic registers      ; 2,279                                         ;
-; Total registers                    ; 2279                                          ;
-; Total pins                         ; 182                                           ;
-; Total virtual pins                 ; 0                                             ;
-; Total memory bits                  ; 107,264                                       ;
-; Embedded Multiplier 9-bit elements ; 42                                            ;
-; Total PLLs                         ; 2                                             ;
-+------------------------------------+-----------------------------------------------+
++-----------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                      ;
++------------------------------------+----------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Wed Nov 07 18:45:52 2018        ;
+; Quartus II Version                 ; 9.1 Build 350 03/24/2010 SP 2 SJ Web Edition ;
+; Revision Name                      ; DE2Bot                                       ;
+; Top-level Entity Name              ; DE2bot                                       ;
+; Family                             ; Cyclone II                                   ;
+; Total logic elements               ; 5,770                                        ;
+;     Total combinational functions  ; 4,994                                        ;
+;     Dedicated logic registers      ; 2,279                                        ;
+; Total registers                    ; 2279                                         ;
+; Total pins                         ; 182                                          ;
+; Total virtual pins                 ; 0                                            ;
+; Total memory bits                  ; 107,264                                      ;
+; Embedded Multiplier 9-bit elements ; 42                                           ;
+; Total PLLs                         ; 2                                            ;
++------------------------------------+----------------------------------------------+
 
 
 +----------------------------------------------------------------------------------------------------------------------+
@@ -271,149 +271,143 @@ applicable agreement for further details.
 +----------------------------------------------------------------------------+--------------------+--------------------+
 
 
-+------------------------------------------+
-; Parallel Compilation                     ;
-+----------------------------+-------------+
-; Processors                 ; Number      ;
-+----------------------------+-------------+
-; Number detected on machine ; 4           ;
-; Maximum allowed            ; 4           ;
-;                            ;             ;
-; Average used               ; 1.00        ;
-; Maximum used               ; 1           ;
-;                            ;             ;
-; Usage by Processor         ; % Time Used ;
-;     1 processor            ; 100.0%      ;
-;     2-4 processors         ;   0.0%      ;
-+----------------------------+-------------+
+Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
++-------------------------------------+
+; Parallel Compilation                ;
++----------------------------+--------+
+; Processors                 ; Number ;
++----------------------------+--------+
+; Number detected on machine ; 2      ;
+; Maximum allowed            ; 1      ;
++----------------------------+--------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                           ;
-+----------------------------------+-----------------+----------------------------------------+--------------------------------------------------------------------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                       ;
-+----------------------------------+-----------------+----------------------------------------+--------------------------------------------------------------------+
-; IR_RCVR.bdf                      ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/IR_RCVR.bdf                       ;
-; acc_clk_gen.vhd                  ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/acc_clk_gen.vhd                   ;
-; altpll0.vhd                      ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/altpll0.vhd                       ;
-; altpll1.vhd                      ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/altpll1.vhd                       ;
-; DE2bot.bdf                       ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/DE2bot.bdf                        ;
-; DIG_IN.vhd                       ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/DIG_IN.vhd                        ;
-; HEX_DISP.vhd                     ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/HEX_DISP.vhd                      ;
-; i2c_ctrl.vhd                     ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/i2c_ctrl.vhd                      ;
-; I2C_INTERFACE.bdf                ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/I2C_INTERFACE.bdf                 ;
-; i2c_master.vhd                   ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/i2c_master.vhd                    ;
-; i2c_oneshot_ctrl.vhd             ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/i2c_oneshot_ctrl.vhd              ;
-; IO_DECODER.vhd                   ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/IO_DECODER.vhd                    ;
-; LEDS.vhd                         ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/LEDS.vhd                          ;
-; lpm_add_sub_oe0.vhd              ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_add_sub_oe0.vhd               ;
-; lpm_bustri_oe0.vhd               ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_bustri_oe0.vhd                ;
-; lpm_bustri_uart0.vhd             ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_bustri_uart0.vhd              ;
-; lpm_constant_oe0.vhd             ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_constant_oe0.vhd              ;
-; lpm_counter_oe0.vhd              ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_counter_oe0.vhd               ;
-; lpm_dff_oe0.vhd                  ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_dff_oe0.vhd                   ;
-; lpm_dff_uart0.vhd                ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_dff_uart0.vhd                 ;
-; lpm_mult_oe0.vhd                 ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/lpm_mult_oe0.vhd                  ;
-; ODOMETRY.vhd                     ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/ODOMETRY.vhd                      ;
-; oneshot_i2c.bdf                  ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/oneshot_i2c.bdf                   ;
-; OPTICAL_ENCODER.bdf              ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/OPTICAL_ENCODER.bdf               ;
-; POSN_VEL.bdf                     ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/POSN_VEL.bdf                      ;
-; QUAD_HEX.bdf                     ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/QUAD_HEX.bdf                      ;
-; QUADRATURE_DECODE.bdf            ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/QUADRATURE_DECODE.bdf             ;
-; SAFETY_ENABLE.bdf                ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/SAFETY_ENABLE.bdf                 ;
-; SCOMP.vhd                        ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/SCOMP.vhd                         ;
-; SLCD.vhd                         ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/SLCD.vhd                          ;
-; SONAR.vhd                        ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/SONAR.vhd                         ;
-; TIMER.vhd                        ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/TIMER.vhd                         ;
-; uart.vhd                         ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/uart.vhd                          ;
-; uart_dcfifo_in.vhd               ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/uart_dcfifo_in.vhd                ;
-; uart_dcfifo_out.vhd              ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/uart_dcfifo_out.vhd               ;
-; UART_INTERFACE.bdf               ; yes             ; User Block Diagram/Schematic File      ; E:/ECE2031/Project/DE2Bot_Fall18/UART_INTERFACE.bdf                ;
-; VEL_CONTROL.vhd                  ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/VEL_CONTROL.vhd                   ;
-; UART_LIMITER.vhd                 ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/UART_LIMITER.vhd                  ;
-; CTIMER.vhd                       ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/CTIMER.vhd                        ;
-; DAC_BEEP.vhd                     ; yes             ; User VHDL File                         ; E:/ECE2031/Project/DE2Bot_Fall18/DAC_BEEP.vhd                      ;
-; ir_lpm_dff9.vhd                  ; yes             ; User Wizard-Generated File             ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_dff9.vhd                   ;
-; altpll.tdf                       ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/altpll.tdf       ;
-; altsyncram.tdf                   ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/altsyncram.tdf   ;
-; db/altsyncram_8ut3.tdf           ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/altsyncram_8ut3.tdf            ;
-; SimpleScanDemo.mif               ; yes             ; Auto-Found Memory Initialization File  ; E:/ECE2031/Project/DE2Bot_Fall18/SimpleScanDemo.mif                ;
-; lpm_clshift.tdf                  ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_clshift.tdf  ;
-; db/lpm_clshift_fuc.tdf           ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/lpm_clshift_fuc.tdf            ;
-; lpm_bustri.tdf                   ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_bustri.tdf   ;
-; ir_lpm_counter0.vhd              ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_counter0.vhd               ;
-; lpm_counter.tdf                  ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_counter.tdf  ;
-; db/cntr_7ji.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cntr_7ji.tdf                   ;
-; ir_lpm_compare0.vhd              ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_compare0.vhd               ;
-; lpm_compare.tdf                  ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_compare.tdf  ;
-; db/cmpr_h0h.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cmpr_h0h.tdf                   ;
-; ir_lpm_constant2.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_constant2.vhd              ;
-; lpm_constant.tdf                 ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_constant.tdf ;
-; lpm_ff.tdf                       ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_ff.tdf       ;
-; ir_lpm_counter1.vhd              ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_counter1.vhd               ;
-; db/cntr_7ij.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cntr_7ij.tdf                   ;
-; ir_lpm_constant0.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_constant0.vhd              ;
-; ir_lpm_shiftreg0.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_shiftreg0.vhd              ;
-; lpm_shiftreg.tdf                 ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_shiftreg.tdf ;
-; ir_lpm_constant1.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; E:/ECE2031/Project/DE2Bot_Fall18/ir_lpm_constant1.vhd              ;
-; lpm_add_sub.tdf                  ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_add_sub.tdf  ;
-; db/add_sub_nfh.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_nfh.tdf                ;
-; db/cntr_mrg.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cntr_mrg.tdf                   ;
-; lpm_mult.tdf                     ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_mult.tdf     ;
-; db/mult_j2n.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mult_j2n.tdf                   ;
-; db/altsyncram_06l3.tdf           ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/altsyncram_06l3.tdf            ;
-; SIN_table.mif                    ; yes             ; Auto-Found Memory Initialization File  ; E:/ECE2031/Project/DE2Bot_Fall18/SIN_table.mif                     ;
-; db/altsyncram_r5l3.tdf           ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/altsyncram_r5l3.tdf            ;
-; COS_table.mif                    ; yes             ; Auto-Found Memory Initialization File  ; E:/ECE2031/Project/DE2Bot_Fall18/COS_table.mif                     ;
-; db/mult_h3o.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mult_h3o.tdf                   ;
-; multcore.tdf                     ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/multcore.tdf     ;
-; mpar_add.tdf                     ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/mpar_add.tdf     ;
-; db/add_sub_5ch.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_5ch.tdf                ;
-; db/add_sub_9ch.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_9ch.tdf                ;
-; altshift.tdf                     ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/altshift.tdf     ;
-; db/add_sub_25h.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_25h.tdf                ;
-; db/add_sub_0gh.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_0gh.tdf                ;
-; dcfifo.tdf                       ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/dcfifo.tdf       ;
-; db/dcfifo_qtl1.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dcfifo_qtl1.tdf                ;
-; db/a_graycounter_d86.tdf         ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_graycounter_d86.tdf          ;
-; db/a_graycounter_4fc.tdf         ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_graycounter_4fc.tdf          ;
-; db/a_graycounter_3fc.tdf         ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_graycounter_3fc.tdf          ;
-; db/altsyncram_9hu.tdf            ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/altsyncram_9hu.tdf             ;
-; db/dffpipe_ngh.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dffpipe_ngh.tdf                ;
-; db/alt_synch_pipe_gcb.tdf        ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/alt_synch_pipe_gcb.tdf         ;
-; db/dffpipe_ed9.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dffpipe_ed9.tdf                ;
-; db/alt_synch_pipe_kc8.tdf        ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/alt_synch_pipe_kc8.tdf         ;
-; db/dffpipe_fd9.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dffpipe_fd9.tdf                ;
-; db/cmpr_n16.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cmpr_n16.tdf                   ;
-; db/mux_1u7.tdf                   ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mux_1u7.tdf                    ;
-; db/dcfifo_31m1.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dcfifo_31m1.tdf                ;
-; db/a_gray2bin_acb.tdf            ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_gray2bin_acb.tdf             ;
-; db/a_graycounter_e86.tdf         ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_graycounter_e86.tdf          ;
-; db/a_graycounter_5fc.tdf         ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_graycounter_5fc.tdf          ;
-; db/a_graycounter_6fc.tdf         ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/a_graycounter_6fc.tdf          ;
-; db/altsyncram_bhu.tdf            ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/altsyncram_bhu.tdf             ;
-; db/dffpipe_adc.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dffpipe_adc.tdf                ;
-; db/alt_synch_pipe_hcb.tdf        ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/alt_synch_pipe_hcb.tdf         ;
-; db/dffpipe_gd9.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dffpipe_gd9.tdf                ;
-; db/alt_synch_pipe_lc8.tdf        ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/alt_synch_pipe_lc8.tdf         ;
-; db/dffpipe_hd9.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/dffpipe_hd9.tdf                ;
-; db/cmpr_o16.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cmpr_o16.tdf                   ;
-; db/cntr_gkj.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cntr_gkj.tdf                   ;
-; db/cmpr_a2i.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/cmpr_a2i.tdf                   ;
-; db/altsyncram_pmk3.tdf           ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/altsyncram_pmk3.tdf            ;
-; SOUND.mif                        ; yes             ; Auto-Found Memory Initialization File  ; E:/ECE2031/Project/DE2Bot_Fall18/SOUND.mif                         ;
-; db/mult_m3t.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mult_m3t.tdf                   ;
-; db/mult_45t.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mult_45t.tdf                   ;
-; db/mult_q3t.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mult_q3t.tdf                   ;
-; lpm_divide.tdf                   ; yes             ; Megafunction                           ; c:/appl/altera/91/quartus/libraries/megafunctions/lpm_divide.tdf   ;
-; db/lpm_divide_ulo.tdf            ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/lpm_divide_ulo.tdf             ;
-; db/abs_divider_8dg.tdf           ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/abs_divider_8dg.tdf            ;
-; db/alt_u_div_s5f.tdf             ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/alt_u_div_s5f.tdf              ;
-; db/add_sub_lkc.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_lkc.tdf                ;
-; db/add_sub_mkc.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/add_sub_mkc.tdf                ;
-; db/lpm_abs_2s9.tdf               ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/lpm_abs_2s9.tdf                ;
-; db/mult_25t.tdf                  ; yes             ; Auto-Generated Megafunction            ; E:/ECE2031/Project/DE2Bot_Fall18/db/mult_25t.tdf                   ;
-+----------------------------------+-----------------+----------------------------------------+--------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                ;
++----------------------------------+-----------------+----------------------------------------+-------------------------------------------------------------------------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                              ; File Name with Absolute Path                                            ;
++----------------------------------+-----------------+----------------------------------------+-------------------------------------------------------------------------+
+; IR_RCVR.bdf                      ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/IR_RCVR.bdf               ;
+; acc_clk_gen.vhd                  ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/acc_clk_gen.vhd           ;
+; altpll0.vhd                      ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/altpll0.vhd               ;
+; altpll1.vhd                      ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/altpll1.vhd               ;
+; DE2bot.bdf                       ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/DE2bot.bdf                ;
+; DIG_IN.vhd                       ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/DIG_IN.vhd                ;
+; HEX_DISP.vhd                     ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/HEX_DISP.vhd              ;
+; i2c_ctrl.vhd                     ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/i2c_ctrl.vhd              ;
+; I2C_INTERFACE.bdf                ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/I2C_INTERFACE.bdf         ;
+; i2c_master.vhd                   ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/i2c_master.vhd            ;
+; i2c_oneshot_ctrl.vhd             ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/i2c_oneshot_ctrl.vhd      ;
+; IO_DECODER.vhd                   ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/IO_DECODER.vhd            ;
+; LEDS.vhd                         ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/LEDS.vhd                  ;
+; lpm_add_sub_oe0.vhd              ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_add_sub_oe0.vhd       ;
+; lpm_bustri_oe0.vhd               ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_bustri_oe0.vhd        ;
+; lpm_bustri_uart0.vhd             ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_bustri_uart0.vhd      ;
+; lpm_constant_oe0.vhd             ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_constant_oe0.vhd      ;
+; lpm_counter_oe0.vhd              ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_counter_oe0.vhd       ;
+; lpm_dff_oe0.vhd                  ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_dff_oe0.vhd           ;
+; lpm_dff_uart0.vhd                ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_dff_uart0.vhd         ;
+; lpm_mult_oe0.vhd                 ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/lpm_mult_oe0.vhd          ;
+; ODOMETRY.vhd                     ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ODOMETRY.vhd              ;
+; oneshot_i2c.bdf                  ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/oneshot_i2c.bdf           ;
+; OPTICAL_ENCODER.bdf              ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/OPTICAL_ENCODER.bdf       ;
+; POSN_VEL.bdf                     ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/POSN_VEL.bdf              ;
+; QUAD_HEX.bdf                     ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/QUAD_HEX.bdf              ;
+; QUADRATURE_DECODE.bdf            ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/QUADRATURE_DECODE.bdf     ;
+; SAFETY_ENABLE.bdf                ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/SAFETY_ENABLE.bdf         ;
+; SCOMP.vhd                        ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/SCOMP.vhd                 ;
+; SLCD.vhd                         ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/SLCD.vhd                  ;
+; SONAR.vhd                        ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/SONAR.vhd                 ;
+; TIMER.vhd                        ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/TIMER.vhd                 ;
+; uart.vhd                         ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/uart.vhd                  ;
+; uart_dcfifo_in.vhd               ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/uart_dcfifo_in.vhd        ;
+; uart_dcfifo_out.vhd              ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/uart_dcfifo_out.vhd       ;
+; UART_INTERFACE.bdf               ; yes             ; User Block Diagram/Schematic File      ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/UART_INTERFACE.bdf        ;
+; VEL_CONTROL.vhd                  ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/VEL_CONTROL.vhd           ;
+; UART_LIMITER.vhd                 ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/UART_LIMITER.vhd          ;
+; CTIMER.vhd                       ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/CTIMER.vhd                ;
+; DAC_BEEP.vhd                     ; yes             ; User VHDL File                         ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/DAC_BEEP.vhd              ;
+; ir_lpm_dff9.vhd                  ; yes             ; User Wizard-Generated File             ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_dff9.vhd           ;
+; altpll.tdf                       ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/altpll.tdf              ;
+; altsyncram.tdf                   ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/altsyncram.tdf          ;
+; db/altsyncram_pss3.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/altsyncram_pss3.tdf    ;
+; Main.mif                         ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/Main.mif                  ;
+; lpm_clshift.tdf                  ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_clshift.tdf         ;
+; db/lpm_clshift_fuc.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/lpm_clshift_fuc.tdf    ;
+; lpm_bustri.tdf                   ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_bustri.tdf          ;
+; ir_lpm_counter0.vhd              ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_counter0.vhd       ;
+; lpm_counter.tdf                  ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_counter.tdf         ;
+; db/cntr_7ji.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cntr_7ji.tdf           ;
+; ir_lpm_compare0.vhd              ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_compare0.vhd       ;
+; lpm_compare.tdf                  ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_compare.tdf         ;
+; db/cmpr_h0h.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cmpr_h0h.tdf           ;
+; ir_lpm_constant2.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_constant2.vhd      ;
+; lpm_constant.tdf                 ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_constant.tdf        ;
+; lpm_ff.tdf                       ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_ff.tdf              ;
+; ir_lpm_counter1.vhd              ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_counter1.vhd       ;
+; db/cntr_7ij.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cntr_7ij.tdf           ;
+; ir_lpm_constant0.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_constant0.vhd      ;
+; ir_lpm_shiftreg0.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_shiftreg0.vhd      ;
+; lpm_shiftreg.tdf                 ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_shiftreg.tdf        ;
+; ir_lpm_constant1.vhd             ; yes             ; Auto-Found Wizard-Generated File       ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/ir_lpm_constant1.vhd      ;
+; lpm_add_sub.tdf                  ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_add_sub.tdf         ;
+; db/add_sub_nfh.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_nfh.tdf        ;
+; db/cntr_mrg.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cntr_mrg.tdf           ;
+; lpm_mult.tdf                     ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_mult.tdf            ;
+; db/mult_j2n.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mult_j2n.tdf           ;
+; db/altsyncram_06l3.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/altsyncram_06l3.tdf    ;
+; SIN_table.mif                    ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/SIN_table.mif             ;
+; db/altsyncram_r5l3.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/altsyncram_r5l3.tdf    ;
+; COS_table.mif                    ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/COS_table.mif             ;
+; db/mult_h3o.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mult_h3o.tdf           ;
+; multcore.tdf                     ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/multcore.tdf            ;
+; mpar_add.tdf                     ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/mpar_add.tdf            ;
+; db/add_sub_5ch.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_5ch.tdf        ;
+; db/add_sub_9ch.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_9ch.tdf        ;
+; altshift.tdf                     ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/altshift.tdf            ;
+; db/add_sub_25h.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_25h.tdf        ;
+; db/add_sub_0gh.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_0gh.tdf        ;
+; dcfifo.tdf                       ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/dcfifo.tdf              ;
+; db/dcfifo_qtl1.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dcfifo_qtl1.tdf        ;
+; db/a_graycounter_d86.tdf         ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_graycounter_d86.tdf  ;
+; db/a_graycounter_4fc.tdf         ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_graycounter_4fc.tdf  ;
+; db/a_graycounter_3fc.tdf         ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_graycounter_3fc.tdf  ;
+; db/altsyncram_9hu.tdf            ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/altsyncram_9hu.tdf     ;
+; db/dffpipe_ngh.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dffpipe_ngh.tdf        ;
+; db/alt_synch_pipe_gcb.tdf        ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/alt_synch_pipe_gcb.tdf ;
+; db/dffpipe_ed9.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dffpipe_ed9.tdf        ;
+; db/alt_synch_pipe_kc8.tdf        ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/alt_synch_pipe_kc8.tdf ;
+; db/dffpipe_fd9.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dffpipe_fd9.tdf        ;
+; db/cmpr_n16.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cmpr_n16.tdf           ;
+; db/mux_1u7.tdf                   ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mux_1u7.tdf            ;
+; db/dcfifo_31m1.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dcfifo_31m1.tdf        ;
+; db/a_gray2bin_acb.tdf            ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_gray2bin_acb.tdf     ;
+; db/a_graycounter_e86.tdf         ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_graycounter_e86.tdf  ;
+; db/a_graycounter_5fc.tdf         ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_graycounter_5fc.tdf  ;
+; db/a_graycounter_6fc.tdf         ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/a_graycounter_6fc.tdf  ;
+; db/altsyncram_bhu.tdf            ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/altsyncram_bhu.tdf     ;
+; db/dffpipe_adc.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dffpipe_adc.tdf        ;
+; db/alt_synch_pipe_hcb.tdf        ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/alt_synch_pipe_hcb.tdf ;
+; db/dffpipe_gd9.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dffpipe_gd9.tdf        ;
+; db/alt_synch_pipe_lc8.tdf        ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/alt_synch_pipe_lc8.tdf ;
+; db/dffpipe_hd9.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/dffpipe_hd9.tdf        ;
+; db/cmpr_o16.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cmpr_o16.tdf           ;
+; db/cntr_gkj.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cntr_gkj.tdf           ;
+; db/cmpr_a2i.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/cmpr_a2i.tdf           ;
+; db/altsyncram_pmk3.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/altsyncram_pmk3.tdf    ;
+; SOUND.mif                        ; yes             ; Auto-Found Memory Initialization File  ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/SOUND.mif                 ;
+; db/mult_m3t.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mult_m3t.tdf           ;
+; db/mult_45t.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mult_45t.tdf           ;
+; db/mult_q3t.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mult_q3t.tdf           ;
+; lpm_divide.tdf                   ; yes             ; Megafunction                           ; c:/altera/91sp2/quartus/libraries/megafunctions/lpm_divide.tdf          ;
+; db/lpm_divide_ulo.tdf            ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/lpm_divide_ulo.tdf     ;
+; db/abs_divider_8dg.tdf           ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/abs_divider_8dg.tdf    ;
+; db/alt_u_div_s5f.tdf             ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/alt_u_div_s5f.tdf      ;
+; db/add_sub_lkc.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_lkc.tdf        ;
+; db/add_sub_mkc.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/add_sub_mkc.tdf        ;
+; db/lpm_abs_2s9.tdf               ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/lpm_abs_2s9.tdf        ;
+; db/mult_25t.tdf                  ; yes             ; Auto-Generated Megafunction            ; C:/Users/baran/Documents/GitHub/DE2Bot_Fall18/db/mult_25t.tdf           ;
++----------------------------------+-----------------+----------------------------------------+-------------------------------------------------------------------------+
 
 
 +---------------------------------------------------------------------------------------------------+
@@ -577,7 +571,7 @@ applicable agreement for further details.
 ;    |SAFETY_ENABLE:inst4|                          ; 1 (1)             ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SAFETY_ENABLE:inst4                                                                                                                             ;              ;
 ;    |SCOMP:inst8|                                  ; 520 (439)         ; 227 (227)    ; 32768       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SCOMP:inst8                                                                                                                                     ;              ;
 ;       |altsyncram:MEMORY|                         ; 0 (0)             ; 0 (0)        ; 32768       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SCOMP:inst8|altsyncram:MEMORY                                                                                                                   ;              ;
-;          |altsyncram_8ut3:auto_generated|         ; 0 (0)             ; 0 (0)        ; 32768       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SCOMP:inst8|altsyncram:MEMORY|altsyncram_8ut3:auto_generated                                                                                    ;              ;
+;          |altsyncram_pss3:auto_generated|         ; 0 (0)             ; 0 (0)        ; 32768       ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SCOMP:inst8|altsyncram:MEMORY|altsyncram_pss3:auto_generated                                                                                    ;              ;
 ;       |lpm_clshift:SHIFTER|                       ; 81 (0)            ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SCOMP:inst8|lpm_clshift:SHIFTER                                                                                                                 ;              ;
 ;          |lpm_clshift_fuc:auto_generated|         ; 81 (81)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SCOMP:inst8|lpm_clshift:SHIFTER|lpm_clshift_fuc:auto_generated                                                                                  ;              ;
 ;    |SLCD:inst55|                                  ; 85 (85)           ; 49 (49)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |DE2bot|SLCD:inst55                                                                                                                                     ;              ;
@@ -667,18 +661,18 @@ applicable agreement for further details.
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis RAM Summary                                                                                                                                                                                                                     ;
-+-----------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+--------------------+
-; Name                                                                                                                              ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF                ;
-+-----------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+--------------------+
-; DAC_BEEP:inst35|altsyncram:SOUND_LUT|altsyncram_pmk3:auto_generated|ALTSYNCRAM                                                    ; AUTO ; ROM              ; 512          ; 16           ; --           ; --           ; 8192  ; SOUND.mif          ;
-; ODOMETRY:inst53|altsyncram:COS_LUT|altsyncram_r5l3:auto_generated|ALTSYNCRAM                                                      ; AUTO ; ROM              ; 2048         ; 16           ; --           ; --           ; 32768 ; COS_table.mif      ;
-; ODOMETRY:inst53|altsyncram:SIN_LUT|altsyncram_06l3:auto_generated|ALTSYNCRAM                                                      ; AUTO ; ROM              ; 2048         ; 16           ; --           ; --           ; 32768 ; SIN_table.mif      ;
-; SCOMP:inst8|altsyncram:MEMORY|altsyncram_8ut3:auto_generated|ALTSYNCRAM                                                           ; AUTO ; Single Port      ; 2048         ; 16           ; --           ; --           ; 32768 ; SimpleScanDemo.mif ;
-; UART_INTERFACE:inst1|uart_dcfifo_in:inst8|dcfifo:dcfifo_component|dcfifo_qtl1:auto_generated|altsyncram_9hu:fifo_ram|ALTSYNCRAM   ; AUTO ; Simple Dual Port ; 32           ; 8            ; 32           ; 8            ; 256   ; None               ;
-; UART_INTERFACE:inst1|uart_dcfifo_out:inst14|dcfifo:dcfifo_component|dcfifo_31m1:auto_generated|altsyncram_bhu:fifo_ram|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 64           ; 8            ; 64           ; 8            ; 512   ; None               ;
-+-----------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+--------------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis RAM Summary                                                                                                                                                                                                                ;
++-----------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+---------------+
+; Name                                                                                                                              ; Type ; Mode             ; Port A Depth ; Port A Width ; Port B Depth ; Port B Width ; Size  ; MIF           ;
++-----------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+---------------+
+; DAC_BEEP:inst35|altsyncram:SOUND_LUT|altsyncram_pmk3:auto_generated|ALTSYNCRAM                                                    ; AUTO ; ROM              ; 512          ; 16           ; --           ; --           ; 8192  ; SOUND.mif     ;
+; ODOMETRY:inst53|altsyncram:COS_LUT|altsyncram_r5l3:auto_generated|ALTSYNCRAM                                                      ; AUTO ; ROM              ; 2048         ; 16           ; --           ; --           ; 32768 ; COS_table.mif ;
+; ODOMETRY:inst53|altsyncram:SIN_LUT|altsyncram_06l3:auto_generated|ALTSYNCRAM                                                      ; AUTO ; ROM              ; 2048         ; 16           ; --           ; --           ; 32768 ; SIN_table.mif ;
+; SCOMP:inst8|altsyncram:MEMORY|altsyncram_pss3:auto_generated|ALTSYNCRAM                                                           ; AUTO ; Single Port      ; 2048         ; 16           ; --           ; --           ; 32768 ; Main.mif      ;
+; UART_INTERFACE:inst1|uart_dcfifo_in:inst8|dcfifo:dcfifo_component|dcfifo_qtl1:auto_generated|altsyncram_9hu:fifo_ram|ALTSYNCRAM   ; AUTO ; Simple Dual Port ; 32           ; 8            ; 32           ; 8            ; 256   ; None          ;
+; UART_INTERFACE:inst1|uart_dcfifo_out:inst14|dcfifo:dcfifo_component|dcfifo_31m1:auto_generated|altsyncram_bhu:fifo_ram|ALTSYNCRAM ; AUTO ; Simple Dual Port ; 64           ; 8            ; 64           ; 8            ; 512   ; None          ;
++-----------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+-------+---------------+
 
 
 +-----------------------------------------------------+
@@ -1339,7 +1333,7 @@ Encoding Type:  One-Hot
 
 
 +-------------------------------------------------------------------------------------+
-; Source assignments for SCOMP:inst8|altsyncram:MEMORY|altsyncram_8ut3:auto_generated ;
+; Source assignments for SCOMP:inst8|altsyncram:MEMORY|altsyncram_pss3:auto_generated ;
 +---------------------------------+--------------------+------+-----------------------+
 ; Assignment                      ; Value              ; From ; To                    ;
 +---------------------------------+--------------------+------+-----------------------+
@@ -2133,7 +2127,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; READ_DURING_WRITE_MODE_MIXED_PORTS ; DONT_CARE            ; Untyped        ;
 ; READ_DURING_WRITE_MODE_PORT_A      ; NEW_DATA_NO_NBE_READ ; Untyped        ;
 ; READ_DURING_WRITE_MODE_PORT_B      ; NEW_DATA_NO_NBE_READ ; Untyped        ;
-; INIT_FILE                          ; SimpleScanDemo.mif   ; Untyped        ;
+; INIT_FILE                          ; Main.mif             ; Untyped        ;
 ; INIT_FILE_LAYOUT                   ; PORT_A               ; Untyped        ;
 ; MAXIMUM_DEPTH                      ; 0                    ; Signed Integer ;
 ; CLOCK_ENABLE_INPUT_A               ; NORMAL               ; Untyped        ;
@@ -2144,7 +2138,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; CLOCK_ENABLE_CORE_B                ; USE_INPUT_CLKEN      ; Untyped        ;
 ; ENABLE_ECC                         ; FALSE                ; Untyped        ;
 ; DEVICE_FAMILY                      ; Cyclone II           ; Untyped        ;
-; CBXI_PARAMETER                     ; altsyncram_8ut3      ; Untyped        ;
+; CBXI_PARAMETER                     ; altsyncram_pss3      ; Untyped        ;
 +------------------------------------+----------------------+----------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings Tables in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -4539,10 +4533,9 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------+
 Info: *******************************************************************
 Info: Running Quartus II Analysis & Synthesis
-    Info: Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Full Version
-    Info: Processing started: Tue Oct 30 12:56:57 2018
+    Info: Version 9.1 Build 350 03/24/2010 Service Pack 2 SJ Web Edition
+    Info: Processing started: Wed Nov 07 18:45:23 2018
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE2Bot -c DE2Bot
-Info: Parallel compilation is enabled and will use 4 of the 4 processors detected
 Info: Found 1 design units, including 1 entities, in source file ir_rcvr.bdf
     Info: Found entity 1: IR_RCVR
 Info: Found 2 design units, including 1 entities, in source file acc_clk_gen.vhd
@@ -4763,7 +4756,7 @@ Info: Instantiated megafunction "SCOMP:inst8|altsyncram:MEMORY" with the followi
     Info: Parameter "indata_aclr_a" = "NONE"
     Info: Parameter "indata_aclr_b" = "NONE"
     Info: Parameter "indata_reg_b" = "CLOCK1"
-    Info: Parameter "init_file" = "SimpleScanDemo.mif"
+    Info: Parameter "init_file" = "Main.mif"
     Info: Parameter "init_file_layout" = "PORT_A"
     Info: Parameter "maximum_depth" = "0"
     Info: Parameter "numwords_a" = "2048"
@@ -4792,10 +4785,10 @@ Info: Instantiated megafunction "SCOMP:inst8|altsyncram:MEMORY" with the followi
     Info: Parameter "wrcontrol_wraddress_reg_b" = "CLOCK1"
     Info: Parameter "lpm_hint" = "ENABLE_RUNTIME_MOD=NO"
     Info: Parameter "lpm_type" = "altsyncram"
-Info: Found 1 design units, including 1 entities, in source file db/altsyncram_8ut3.tdf
-    Info: Found entity 1: altsyncram_8ut3
-Info: Elaborating entity "altsyncram_8ut3" for hierarchy "SCOMP:inst8|altsyncram:MEMORY|altsyncram_8ut3:auto_generated"
-Warning: 575 out of 2048 addresses are reinitialized. The latest initialized data will replace the existing data. There are 575 warnings found, and 10 warnings are reported.
+Info: Found 1 design units, including 1 entities, in source file db/altsyncram_pss3.tdf
+    Info: Found entity 1: altsyncram_pss3
+Info: Elaborating entity "altsyncram_pss3" for hierarchy "SCOMP:inst8|altsyncram:MEMORY|altsyncram_pss3:auto_generated"
+Warning: 631 out of 2048 addresses are reinitialized. The latest initialized data will replace the existing data. There are 631 warnings found, and 10 warnings are reported.
     Warning: Memory Initialization File address 0 is reinitialized
     Warning: Memory Initialization File address 1 is reinitialized
     Warning: Memory Initialization File address 2 is reinitialized
@@ -5829,9 +5822,9 @@ Info: Implemented 6348 device resources after synthesis - the final resource cou
     Info: Implemented 2 PLLs
     Info: Implemented 42 DSP elements
 Info: Quartus II Analysis & Synthesis was successful. 0 errors, 134 warnings
-    Info: Peak virtual memory: 305 megabytes
-    Info: Processing ended: Tue Oct 30 13:00:16 2018
-    Info: Elapsed time: 00:03:19
-    Info: Total CPU time (on all processors): 00:00:24
+    Info: Peak virtual memory: 316 megabytes
+    Info: Processing ended: Wed Nov 07 18:45:52 2018
+    Info: Elapsed time: 00:00:29
+    Info: Total CPU time (on all processors): 00:00:26
 
 
