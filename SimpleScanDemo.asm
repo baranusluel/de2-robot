@@ -85,10 +85,12 @@ Main:
 	; code in that ISR will attempt to control the robot.
 	; If you want to take manual control of the robot,
 	; execute CLI &B0010 to disable the timer interrupt.
+	
+	CALL Wait1
 
 	; FindClosest returns the angle to the closest object
 	CALL   FindClosest
-	OUT    SSEG2       ; useful debugging info
+	;OUT    SSEG2       ; useful debugging info
 	
 	; To turn to that angle using the movement API, just store
 	; the angle into the "desired theta" variable.
@@ -102,19 +104,12 @@ Main:
 	
 GoToWall:
 	LOADI 0
-	Store DTheta
+	Store DTheta ; Probably not necessary?
 	IN XPOS
 	SUB CloseVal
-	;IN DIST2
-	;STORE DistTemp
-	;IN DIST3
-	;ADD DistTemp
-	;SHIFT -1
-	;OUT SSEG2
-	ADD Ft2
-	;JUMP StraightLoop
+	ADD Ft3
 	JNEG GoToWall
-	;LOADI -50
+	;LOADI -50	; Reverse velocity for faster stopping?
 	;STORE DVel
 	;CALL Wait1
 	LOADI 0
@@ -127,10 +122,11 @@ GoToWall:
 	STORE  DVel        ; zero desired forward velocity
 	IN     THETA
 	STORE  DTheta      ; desired heading = current heading
-	SEI    &B0010      ; enable interrupts from source 2 (timer)
-	CALL   FindClosest
+	SEI    &B0010      ; enable interrupts from source 2 (timer)	
 	
 	CALL Wait1
+	
+	CALL   FindClosest
 	
 	ADD	   Deg90
 	STORE  DTheta
@@ -155,20 +151,20 @@ MoveByWall:
 	
 	LOADI 0
 	Store DVel
+	
 	CALL Wait1
+	
 	Load DTheta
 	ADD Deg90
 	STORE DTheta
-	CALL Wait1
+	CALL WaitForRotate
+	
 	Load FMid
 	Store DVel
 	
 	JUMP MoveByWall
 	
 	
-	;IN XPOS
-	;SUB Ft4
-	;JNEG MoveByWall
 	LOADI 0
 	STORE DVel
 InfLoop: 
