@@ -133,7 +133,7 @@ GoToWall:
 
 	CALL WaitForRotate
 	
-	; Might be an issue when it goes head-on at a wall
+	; Is an issue when it goes head-on at a wall
 	LOAD Mask3
 	OR Mask2
 	OR Mask5
@@ -157,29 +157,36 @@ CheckSonar2: IN DIST2
 	JNEG ReachedWall
 	
 	
-RightWall: LOADI 10
-	STORE MaxVal
-	IN DIST5
+RightWall: IN DIST5
 	OUT SSEG2
 	STORE CurrDist
 	; Handle somehow if DIST5 is 7FFF
+    ; It means robot has large angle error. Wiggle?
 	JNEG MoveByWall
 	
-	SUB Ft8
-	CALL Abs
-	SUB HalfFt
-	JPOS RightWallAdjust
+    ; TRIGGER option 1: Check for   4 ft -> 8 ft
+	;SUB Ft8
+	;CALL Abs
+	;SUB HalfFt
+	;JPOS RightWallAdjust
 	
-	LOAD PrevDist
-	SUB Ft4
-	Call Abs
-	SUB HalfFt
-	JPOS RightWallAdjust
+	;LOAD PrevDist
+	;SUB Ft4
+	;Call Abs
+	;SUB HalfFt
+	;JPOS RightWallAdjust
+
+    ; TRIGGER option 2: Check for   x ft -> x + 4 ft
+    SUB PrevDist
+    SUB Ft4
+    CALL Abs
+    SUB HalfFt
+    JNEG Finish
 	
-	CALL Finish
 	
-	
-RightWallAdjust: LOAD CurrDist
+RightWallAdjust: LOADI 10
+	STORE MaxVal ; Max cap value for angle adjustment
+    LOAD CurrDist
 	STORE PrevDist
 	SUB Ft4
 	Call NEG
@@ -208,6 +215,7 @@ ReachedWall:	LOADI 0
 	
 	JUMP MoveByWall
 	
+
 Finish: Call WaitHalfSec
 	LOADI 0
 	STORE DVel
@@ -217,9 +225,10 @@ Finish: Call WaitHalfSec
 	LOADI -90
 	STORE DTheta
 	CALL WaitForRotate
-	
-WaitForFinish:	CALL RESETPOS
-	IN XPOS
+
+	CALL RESETPOS
+
+WaitForFinish: IN XPOS
 	SUB Ft4
 	JNEG WaitForFinish
 
@@ -235,7 +244,7 @@ InfLoop:
 ; Wait for a rotation to complete
 WaitForRotate: CALL GetThetaErr
 	CALL Abs
-	ADDI -5
+	ADDI -5 ; Can we make this smaller?
 	JPOS WaitForRotate
 	CALL Wait1
 	RETURN
