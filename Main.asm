@@ -107,7 +107,7 @@ GoToWall:
 	Store DTheta ; Probably not necessary?
 	IN XPOS
 	SUB CloseVal
-	ADD Ft3
+	ADD Ft4
 	JNEG GoToWall
 	;LOADI -50	; Reverse velocity for faster stopping?
 	;STORE DVel
@@ -133,7 +133,10 @@ GoToWall:
 
 	CALL WaitForRotate
 	
+	; Might be an issue when it goes head-on at a wall
 	LOAD Mask3
+	OR Mask2
+	OR Mask5
 	OUT  SONAREN
 	
 	OUT RESETPOS
@@ -142,14 +145,51 @@ GoToWall:
 	Load FMid
 	Store DVel
 	
-MoveByWall: 
-	IN DIST3
-	OUT SSEG2
-	JNEG MoveByWall
-	SUB Ft3
-	JPOS MoveByWall
+MoveByWall: IN DIST3
+	;OUT SSEG2
+	JNEG CheckSonar2
+	SUB Ft4
+	JNEG ReachedWall
+CheckSonar2: IN DIST2
+	;OUT SSEG1
+	JNEG RightWall
+	SUB Ft4
+	JNEG ReachedWall
 	
-	LOADI 0
+	
+RightWall: LOADI 10
+	STORE MaxVal
+	IN DIST5
+	OUT SSEG2
+	STORE CurrDist
+	; Handle somehow if DIST5 is 7FFF
+	JNEG MoveByWall
+	
+	SUB Ft8
+	CALL Abs
+	SUB HalfFt
+	JPOS RightWallAdjust
+	
+	LOAD PrevDist
+	SUB Ft4
+	Call Abs
+	SUB HalfFt
+	JPOS RightWallAdjust
+	
+	CALL Finish
+	
+	
+RightWallAdjust: LOAD CurrDist
+	STORE PrevDist
+	SUB Ft4
+	Call NEG
+	SHIFT -4
+	CALL CapValue
+	STORE DTheta
+
+	JUMP MoveByWall
+	
+ReachedWall:	LOADI 0
 	Store DVel
 	
 	CALL Wait1
@@ -162,9 +202,27 @@ MoveByWall:
 	Load FMid
 	Store DVel
 	
+	OUT RESETPOS
+	LOADI 0
+	STORE DTheta
+	
 	JUMP MoveByWall
 	
+Finish: Call WaitHalfSec
+	LOADI 0
+	STORE DVel
+	Call Wait1
 	
+	CALL RESETPOS
+	LOADI -90
+	STORE DTheta
+	CALL WaitForRotate
+	
+WaitForFinish:	CALL RESETPOS
+	IN XPOS
+	SUB Ft4
+	JNEG WaitForFinish
+
 	LOADI 0
 	STORE DVel
 InfLoop: 
@@ -327,7 +385,7 @@ ControlMovement:
 	; A simple way to get a decent velocity value
 	; for turning is to multiply the angular error by 4
 	; and add ~50.
-	SHIFT  2
+	SHIFT  1			; USED TO BE:	SHIFT 2
 	STORE  CMAErr      ; hold temporarily
 	SHIFT  2           ; multiply by another 4
 	CALL   CapValue    ; get a +/- max of 50
@@ -815,6 +873,16 @@ Wloop:
 	ADDI   -10         ; 1 second at 10Hz.
 	JNEG   Wloop
 	RETURN
+	
+; Subroutine to wait (block) for half a second
+WaitHalfSec:
+	OUT    TIMER
+WloopHalfSec:
+	IN     TIMER
+	OUT    XLEDS       ; User-feedback that a pause is occurring.
+	ADDI   -5         ; half second at 10Hz.
+	JNEG   WloopHalfSec
+	RETURN
 
 ; This subroutine will get the battery voltage,
 ; and stop program execution if it is too low.
@@ -894,6 +962,8 @@ I2CError:
 ;***************************************************************
 Temp:     DW 0 ; "Temp" is not a great name, but can be useful
 DistTemp: DW 0
+PrevDist: DW 0
+CurrDist: DW 0
 
 ;***************************************************************
 ;* Constants
@@ -929,9 +999,11 @@ LowNibl:  DW &HF       ; 0000 0000 0000 1111
 ; some useful movement values
 OneMeter: DW 961       ; ~1m in 1.04mm units
 HalfMeter: DW 481      ; ~0.5m in 1.04mm units
+HalfFt: DW 146
 Ft2:      DW 586       ; ~2ft in 1.04mm units
 Ft3:      DW 879
 Ft4:      DW 1172
+Ft8:	  DW 2344
 Deg90:    DW 90        ; 90 degrees in odometer units
 Deg180:   DW 180       ; 180
 Deg270:   DW 270       ; 270
