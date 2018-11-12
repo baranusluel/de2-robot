@@ -105,6 +105,7 @@ Main:
 GoToWall:
 	LOADI 0
 	Store DTheta ; Probably not necessary?
+	; Have it move away if closer than 4ft
 	IN XPOS
 	SUB CloseVal
 	ADD Ft4
@@ -134,6 +135,7 @@ GoToWall:
 	CALL WaitForRotate
 	
 	; Is an issue when it goes head-on at a wall
+	; Wiggle while moving?
 	LOAD Mask3
 	OR Mask2
 	OR Mask5
@@ -162,6 +164,10 @@ RightWall: IN DIST5
 	STORE CurrDist
 	; Handle somehow if DIST5 is 7FFF
     ; It means robot has large angle error. Wiggle?
+    
+    ; CALL GetWiggleAngle								<--- TODO: TEST
+    ; STORE DTheta										<--- TODO: TEST
+    
 	JNEG MoveByWall
 	
     ; TRIGGER option 1: Check for   4 ft -> 8 ft
@@ -183,25 +189,30 @@ RightWall: IN DIST5
     SUB HalfFt
     JNEG Finish
 	
-	
 RightWallAdjust: LOADI 10
 	STORE MaxVal ; Max cap value for angle adjustment
     LOAD CurrDist
-	STORE PrevDist
+	STORE PrevDist ; Put CurrDist in PrevDist
 	SUB Ft4
 	Call NEG
 	SHIFT -4
 	CALL CapValue
 	STORE DTheta
+	
+	; JPOS MoveByWall									<--- TODO: TEST
+	; JNEG MoveByWall									<--- TODO: TEST
+	; CALL GetWiggleAngle								<--- TODO: TEST
+    ; STORE DTheta										<--- TODO: TEST
 
 	JUMP MoveByWall
 	
-ReachedWall:	LOADI 0
+	
+ReachedWall: LOADI 0
 	Store DVel
 	
 	CALL Wait1
 	
-	Load DTheta
+	Load DTheta ; Should this be DTheta, THETA, or 0?
 	ADD Deg90
 	STORE DTheta
 	CALL WaitForRotate
@@ -221,12 +232,12 @@ Finish: Call WaitHalfSec
 	STORE DVel
 	Call Wait1
 	
-	CALL RESETPOS
+	OUT RESETPOS
 	LOADI -90
 	STORE DTheta
 	CALL WaitForRotate
 
-	CALL RESETPOS
+	OUT RESETPOS
 
 WaitForFinish: IN XPOS
 	SUB Ft4
@@ -243,11 +254,35 @@ InfLoop:
 	
 ; Wait for a rotation to complete
 WaitForRotate: CALL GetThetaErr
-	CALL Abs
-	ADDI -5 ; Can we make this smaller?
+	;CALL Abs
+	;ADDI -5 ; Can we make this smaller? Probably don't need to, given the extra 1 second wait
+	;JPOS WaitForRotate
 	JPOS WaitForRotate
-	CALL Wait1
+	JNEG WaitForRotate
+	;CALL Wait1
+	CALL WaitHalfSec
 	RETURN
+	
+; Gets an intentional error angle ("wiggle angle") from -2 to 2
+; so that robot doesn't approach wall along its blind spot
+GetWiggleAngle: IN Timer
+	CALL Mod10
+	ADDI -5
+	JNEG WiggleN
+	JPOS WiggleP
+	LOADI 0
+	STORE WiggleAngle
+	RETURN
+WiggleN: LOADI -2
+	STORE WiggleAngle
+	RETURN
+WiggleP: LOADI 2
+	STORE WiggleAngle
+	RETURN
+	
+	
+; Find the longest interval of adjacent points, making up a wall
+;FindLongest:
 	
 	
 
@@ -270,7 +305,7 @@ AcquireData:
 	;OUT    LVELCMD
 		
 ADWait:
-	; turn the robot, using the right wheel only
+	; turn the robot, using both wheels
 	LOAD   FSlow
 	OUT    RVELCMD
 	LOAD   RSlow
@@ -301,7 +336,7 @@ ADStore:
 	STORE  CurrTheta   ; update current angle
 	ADDI   90          ; since this sonar is facing left
 	CALL   Mod360      ; wrap angles >360
-	ADDI   DataArray   ; index into the array
+	ADDI   DataArray   ; index into the array (add angle/index to base address)
 	STORE  ArrayIndex
 	IN     DIST0
 	ISTORE ArrayIndex  ; store this data point
@@ -510,6 +545,20 @@ SDLoop2:
 	SUB     Temp        ; check if at end of array
 	JNEG    SDLoop1
 	JUMP    Die         ; when done, go to infinite loop
+	
+;*******************************************************************************
+; Mod10: modulo 10
+; Returns AC%10 in AC
+;*******************************************************************************
+Mod10:
+	; easy modulo: subtract 10 until negative then add 10 until not negative
+	JNEG   M10N
+	ADDI   -10
+	JUMP   Mod10
+M10N:
+	ADDI   10
+	JNEG   M10N
+	RETURN
 
 
 ;*******************************************************************************
@@ -971,8 +1020,9 @@ I2CError:
 ;***************************************************************
 Temp:     DW 0 ; "Temp" is not a great name, but can be useful
 DistTemp: DW 0
-PrevDist: DW 0
+PrevDist: DW &HFFFF
 CurrDist: DW 0
+WiggleAngle: DW 0
 
 ;***************************************************************
 ;* Constants
