@@ -87,15 +87,26 @@ Main:
 	; execute CLI &B0010 to disable the timer interrupt.
 	
 	CALL Wait1
+	
+	;CALL FindLongest								;<--- TODO: TEST
+	;LOAD MaxRangeStart								;<--- TODO: TEST
+	;STORE DTheta									;<--- TODO: TEST
+	;CALL WaitForRotate								;<--- TODO: TEST
+	;LOAD MaxRangeEnd								;<--- TODO: TEST
+	;STORE DTheta									;<--- TODO: TEST
+	;CALL WaitForRotate								;<--- TODO: TEST
+	;LOAD MaxRangeStart								;<--- TODO: TEST
+	;ADD MaxRangeEnd								;<--- TODO: TEST
+	;SHIFT -1										;<--- TODO: TEST
+	;STORE DTheta									;<--- TODO: TEST
+	;CALL WaitForRotate								;<--- TODO: TEST
 
 	; FindClosest returns the angle to the closest object
 	CALL   FindClosest
 	;OUT    SSEG2       ; useful debugging info
-	
 	; To turn to that angle using the movement API, just store
 	; the angle into the "desired theta" variable.
 	STORE  DTheta
-	
 	CALL WaitForRotate
 	
 	OUT RESETPOS
@@ -165,8 +176,8 @@ RightWall: IN DIST5
 	; Handle somehow if DIST5 is 7FFF
     ; It means robot has large angle error. Wiggle?
     
-    ; CALL GetWiggleAngle								<--- TODO: TEST
-    ; STORE DTheta										<--- TODO: TEST
+    ; CALL GetWiggleAngle								;<--- TODO: TEST
+    ; STORE DTheta										;<--- TODO: TEST
     
 	JNEG MoveByWall
 	
@@ -199,10 +210,10 @@ RightWallAdjust: LOADI 10
 	CALL CapValue
 	STORE DTheta
 	
-	; JPOS MoveByWall									<--- TODO: TEST
-	; JNEG MoveByWall									<--- TODO: TEST
-	; CALL GetWiggleAngle								<--- TODO: TEST
-    ; STORE DTheta										<--- TODO: TEST
+	; JPOS MoveByWall									;<--- TODO: TEST
+	; JNEG MoveByWall									;<--- TODO: TEST
+	; CALL GetWiggleAngle								;<--- TODO: TEST
+    ; STORE DTheta										;<--- TODO: TEST
 
 	JUMP MoveByWall
 	
@@ -282,9 +293,85 @@ WiggleP: LOADI 2
 	
 	
 ; Find the longest interval of adjacent points, making up a wall
-;FindLongest:
+FindLongest:
+	LOADI DataArray ; get the base address
+	STORE ArrayIndex
+	STORE CurrRangeStart
+	ADDI 360
+	STORE EndIndex
+	ILOAD ArrayIndex ; get the first entry of array
+	STORE FLPrevDist ; store as prev dist
+FLLoop:
+	LOAD ArrayIndex
+	ADDI 1
+	STORE ArrayIndex ; move to next entry
+	XOR EndIndex ; compare with end index
+	JZERO FLDone
+	ILOAD ArrayIndex ; get the data
+	SUB FLPrevDist ; subtract previous dist
+	CALL Abs ; get absolute error
+	SUB HalfFt ; using half foot as max error between adjacent points (too much?)
+	JNEG FLAdjacent
+	; Points not on same wall
+	LOAD ArrayIndex
+	STORE CurrRangeEnd
+	SUB CurrRangeStart
+	STORE CurrRangeLength
+	SUB MaxRangeLength
+	JNEG FLNotMax
+	; This range was the longest one
+	LOAD CurrRangeStart ; Set max values to curr values
+	STORE MaxRangeStart
+	LOAD CurrRangeEnd
+	STORE MaxRangeEnd
+	LOAD CurrRangeLength
+	STORE MaxRangeLength
+FLNotMax: LOAD ArrayIndex ; Get index of most recent point, which wasn't on wall
+	STORE CurrRangeStart ; Start new range here
+FLAdjacent:
+	ILOAD ArrayIndex ; get the data again
+	STORE FLPrevDist ; store as prev dist
+	JUMP FLLoop
+	
+FLDone:
+	; Check the very last range, which goes to the last index
+	LOAD ArrayIndex
+	STORE CurrRangeEnd
+	SUB CurrRangeStart
+	STORE CurrRangeLength
+	SUB MaxRangeLength
+	JNEG FLNotMaxDone
+	; This range was the longest one
+	LOAD CurrRangeStart ; Set max values to curr values
+	STORE MaxRangeStart
+	LOAD CurrRangeEnd
+	STORE MaxRangeEnd
+	LOAD CurrRangeLength
+	STORE MaxRangeLength
+FLNotMaxDone:	
+	; Need to convert indices to angles
+	LOADI DataArray	; base address
+	SUB MaxRangeStart
+	CALL Neg
+	STORE MaxRangeStart
+	LOADI DataArray
+	SUB MaxRangeEnd
+	CALL Neg
+	STORE MaxRangeEnd
+	RETURN
+	
+	FLPrevDist: DW 0
+	CurrRangeStart: DW 0
+	CurrRangeEnd: DW 0
+	CurrRangeLength: DW 0
+	MaxRangeStart: DW 0
+	MaxRangeEnd: DW 0
+	MaxRangeLength: DW 0
 	
 	
+	
+
+
 
 ; AcquireData will turn the robot counterclockwise and record
 ; 360 sonar values in memory.  The movement API must be disabled
