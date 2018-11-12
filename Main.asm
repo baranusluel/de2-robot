@@ -308,6 +308,7 @@ FLLoop:
 	XOR EndIndex ; compare with end index
 	JZERO FLDone
 	ILOAD ArrayIndex ; get the data
+	JNEG FLNotMax ; if infinite dist, take as end of a range that isn't max range length
 	SUB FLPrevDist ; subtract previous dist
 	CALL Abs ; get absolute error
 	SUB HalfFt ; using half foot as max error between adjacent points (too much?)
@@ -334,7 +335,7 @@ FLAdjacent:
 	JUMP FLLoop
 	
 FLDone:
-	; Check the very last range, which goes to the last index
+	; Check the very last range, which ends at the last index
 	LOAD ArrayIndex
 	STORE CurrRangeEnd
 	SUB CurrRangeStart
