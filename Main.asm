@@ -32,6 +32,10 @@ Init:
 	OUT    LCD         ; Display battery voltage (hex, tenths of volts)
 	
 WaitForSafety:
+	; Check for PB1 to initiate data transmission
+	IN XIO
+	AND Mask0
+	JZERO SendData
 	; This loop will wait for the user to toggle SW17.  Note that
 	; SCOMP does not have direct access to SW17; it only has access
 	; to the SAFETY signal contained in XIO.
@@ -88,18 +92,24 @@ Main:
 	
 	CALL Wait1
 	
-	;CALL FindLongest								;<--- TODO: TEST
-	;LOAD MaxRangeStart								;<--- TODO: TEST
-	;STORE DTheta									;<--- TODO: TEST
-	;CALL WaitForRotate								;<--- TODO: TEST
-	;LOAD MaxRangeEnd								;<--- TODO: TEST
-	;STORE DTheta									;<--- TODO: TEST
-	;CALL WaitForRotate								;<--- TODO: TEST
-	;LOAD MaxRangeStart								;<--- TODO: TEST
-	;ADD MaxRangeEnd								;<--- TODO: TEST
-	;SHIFT -1										;<--- TODO: TEST
-	;STORE DTheta									;<--- TODO: TEST
-	;CALL WaitForRotate								;<--- TODO: TEST
+	CALL FindLongest								;<--- TODO: TEST
+	LOAD MaxRangeStart								;<--- TODO: TEST
+	OUT SSEG2
+	STORE DTheta									;<--- TODO: TEST
+	CALL WaitForRotate								;<--- TODO: TEST
+	LOAD MaxRangeEnd								;<--- TODO: TEST
+	OUT SSEG2
+	STORE DTheta									;<--- TODO: TEST
+	CALL WaitForRotate								;<--- TODO: TEST
+	LOAD MaxRangeStart								;<--- TODO: TEST
+	ADD MaxRangeEnd								;<--- TODO: TEST
+	SHIFT -1										;<--- TODO: TEST
+	OUT SSEG2
+	STORE DTheta									;<--- TODO: TEST
+	CALL WaitForRotate								;<--- TODO: TEST
+	
+	JUMP InfLoop
+	
 
 	; FindClosest returns the angle to the closest object
 	CALL   FindClosest
@@ -119,7 +129,7 @@ GoToWall:
 	; Have it move away if closer than 4ft
 	IN XPOS
 	SUB CloseVal
-	ADD Ft4
+	ADD Ft3
 	JNEG GoToWall
 	;LOADI -50	; Reverse velocity for faster stopping?
 	;STORE DVel
@@ -161,12 +171,12 @@ GoToWall:
 MoveByWall: IN DIST3
 	;OUT SSEG2
 	JNEG CheckSonar2
-	SUB Ft4
+	SUB Ft3
 	JNEG ReachedWall
 CheckSonar2: IN DIST2
 	;OUT SSEG1
 	JNEG RightWall
-	SUB Ft4
+	SUB Ft3
 	JNEG ReachedWall
 	
 	
@@ -176,8 +186,8 @@ RightWall: IN DIST5
 	; Handle somehow if DIST5 is 7FFF
     ; It means robot has large angle error. Wiggle?
     
-    ; CALL GetWiggleAngle								;<--- TODO: TEST
-    ; STORE DTheta										;<--- TODO: TEST
+    CALL GetWiggleAngle								;<--- TODO: TEST
+    STORE DTheta										;<--- TODO: TEST
     
 	JNEG MoveByWall
 	
@@ -204,16 +214,16 @@ RightWallAdjust: LOADI 10
 	STORE MaxVal ; Max cap value for angle adjustment
     LOAD CurrDist
 	STORE PrevDist ; Put CurrDist in PrevDist
-	SUB Ft4
+	SUB Ft3
 	Call NEG
 	SHIFT -4
 	CALL CapValue
 	STORE DTheta
 	
-	; JPOS MoveByWall									;<--- TODO: TEST
-	; JNEG MoveByWall									;<--- TODO: TEST
-	; CALL GetWiggleAngle								;<--- TODO: TEST
-    ; STORE DTheta										;<--- TODO: TEST
+	JPOS MoveByWall									;<--- TODO: TEST
+	JNEG MoveByWall									;<--- TODO: TEST
+	CALL GetWiggleAngle								;<--- TODO: TEST
+    STORE DTheta										;<--- TODO: TEST
 
 	JUMP MoveByWall
 	
@@ -265,13 +275,13 @@ InfLoop:
 	
 ; Wait for a rotation to complete
 WaitForRotate: CALL GetThetaErr
-	;CALL Abs
-	;ADDI -5 ; Can we make this smaller? Probably don't need to, given the extra 1 second wait
-	;JPOS WaitForRotate
+	CALL Abs
+	ADDI -1 ; Can we make this smaller? Probably don't need to, given the extra 1 second wait
 	JPOS WaitForRotate
-	JNEG WaitForRotate
-	;CALL Wait1
-	CALL WaitHalfSec
+	;JPOS WaitForRotate
+	;JNEG WaitForRotate
+	CALL Wait1
+	;CALL WaitHalfSec
 	RETURN
 	
 ; Gets an intentional error angle ("wiggle angle") from -2 to 2
@@ -308,10 +318,13 @@ FLLoop:
 	XOR EndIndex ; compare with end index
 	JZERO FLDone
 	ILOAD ArrayIndex ; get the data
-	JNEG FLNotMax ; if infinite dist, take as end of a range that isn't max range length
+	;JNEG FLNotMax ; if infinite dist, take as end of a range that isn't max range length
+	SUB MaxDistThreshold
+	JPOS FLNotMax ; if infinite dist, skip
+	ILOAD ArrayIndex ; get the data again
 	SUB FLPrevDist ; subtract previous dist
 	CALL Abs ; get absolute error
-	SUB HalfFt ; using half foot as max error between adjacent points (too much?)
+	SUB AdjacentThreshold ; using half foot as max error between adjacent points (too much?)
 	JNEG FLAdjacent
 	; Points not on same wall
 	LOAD ArrayIndex
@@ -1111,6 +1124,8 @@ DistTemp: DW 0
 PrevDist: DW &HFFFF
 CurrDist: DW 0
 WiggleAngle: DW 0
+AdjacentThreshold: DW 40
+MaxDistThreshold: DW 3000
 
 ;***************************************************************
 ;* Constants
