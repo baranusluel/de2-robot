@@ -93,31 +93,32 @@ Main:
 	CALL Wait1
 	
 	CALL FindLongest								;<--- TODO: TEST
-	LOAD MaxRangeStart								;<--- TODO: TEST
-	OUT SSEG2
-	STORE DTheta									;<--- TODO: TEST
-	CALL WaitForRotate								;<--- TODO: TEST
-	LOAD MaxRangeEnd								;<--- TODO: TEST
-	OUT SSEG2
-	STORE DTheta									;<--- TODO: TEST
-	CALL WaitForRotate								;<--- TODO: TEST
-	LOAD MaxRangeStart								;<--- TODO: TEST
-	ADD MaxRangeEnd								;<--- TODO: TEST
-	SHIFT -1										;<--- TODO: TEST
+	;LOAD MaxRangeStart								;<--- TODO: TEST
+	;OUT SSEG2
+	;STORE DTheta									;<--- TODO: TEST
+	;CALL WaitForRotate								;<--- TODO: TEST
+	;LOAD MaxRangeEnd								;<--- TODO: TEST
+	;OUT SSEG2
+	;STORE DTheta									;<--- TODO: TEST
+	;CALL WaitForRotate								;<--- TODO: TEST
+	;LOAD MaxRangeStart								;<--- TODO: TEST
+	;ADD MaxRangeEnd								;<--- TODO: TEST
+	;SHIFT -1										;<--- TODO: TEST
+	LOAD MaxRangeMid
 	OUT SSEG2
 	STORE DTheta									;<--- TODO: TEST
 	CALL WaitForRotate								;<--- TODO: TEST
 	
-	JUMP InfLoop
+	;JUMP InfLoop
 	
 
 	; FindClosest returns the angle to the closest object
-	CALL   FindClosest
+	;CALL   FindClosest
 	;OUT    SSEG2       ; useful debugging info
 	; To turn to that angle using the movement API, just store
 	; the angle into the "desired theta" variable.
-	STORE  DTheta
-	CALL WaitForRotate
+	;STORE  DTheta
+	;CALL WaitForRotate
 	
 	OUT RESETPOS
 	LOAD FMid
@@ -128,7 +129,7 @@ GoToWall:
 	Store DTheta ; Probably not necessary?
 	; Have it move away if closer than 4ft
 	IN XPOS
-	SUB CloseVal
+	SUB MaxRangeDist
 	ADD Ft3
 	JNEG GoToWall
 	;LOADI -50	; Reverse velocity for faster stopping?
@@ -181,7 +182,7 @@ CheckSonar2: IN DIST2
 	
 	
 RightWall: IN DIST5
-	OUT SSEG2
+	;OUT SSEG2
 	STORE CurrDist
 	; Handle somehow if DIST5 is 7FFF
     ; It means robot has large angle error. Wiggle?
@@ -204,10 +205,13 @@ RightWall: IN DIST5
 	;JPOS RightWallAdjust
 
     ; TRIGGER option 2: Check for   x ft -> x + 4 ft
+    LOAD CurrDist
     SUB PrevDist
     SUB Ft4
     CALL Abs
-    SUB HalfFt
+    OUT SSEG2
+    ;SUB HalfFt
+    SUB Ft1
     JNEG Finish
 	
 RightWallAdjust: LOADI 10
@@ -259,9 +263,13 @@ Finish: Call WaitHalfSec
 	CALL WaitForRotate
 
 	OUT RESETPOS
+	LOADI 0
+	STORE DTheta	
+	LOAD FMid
+	STORE DVel
 
 WaitForFinish: IN XPOS
-	SUB Ft4
+	SUB Ft5
 	JNEG WaitForFinish
 
 	LOADI 0
@@ -303,6 +311,9 @@ WiggleP: LOADI 2
 	
 	
 ; Find the longest interval of adjacent points, making up a wall
+; TODO:
+; - Make it recognize ranges going across 360-0
+; - Measure flatness/deviation of ranges to decide between similarly wide ranges
 FindLongest:
 	LOADI DataArray ; get the base address
 	STORE ArrayIndex
@@ -320,14 +331,14 @@ FLLoop:
 	ILOAD ArrayIndex ; get the data
 	;JNEG FLNotMax ; if infinite dist, take as end of a range that isn't max range length
 	SUB MaxDistThreshold
-	JPOS FLNotMax ; if infinite dist, skip
+	JPOS FLNotOnWall ; if infinite dist, skip
 	ILOAD ArrayIndex ; get the data again
 	SUB FLPrevDist ; subtract previous dist
 	CALL Abs ; get absolute error
 	SUB AdjacentThreshold ; using half foot as max error between adjacent points (too much?)
 	JNEG FLAdjacent
 	; Points not on same wall
-	LOAD ArrayIndex
+FLNotOnWall:	LOAD ArrayIndex
 	STORE CurrRangeEnd
 	SUB CurrRangeStart
 	STORE CurrRangeLength
@@ -372,6 +383,16 @@ FLNotMaxDone:
 	SUB MaxRangeEnd
 	CALL Neg
 	STORE MaxRangeEnd
+	; Get midpoint / average of start and end angles
+	LOAD MaxRangeStart
+	ADD MaxRangeEnd
+	SHIFT -1
+	STORE MaxRangeMid
+	LOADI DataArray ; base address
+	ADD MaxRangeMid ; index array at mid of max range
+	STORE FLtmp
+	ILOAD FLtmp
+	STORE MaxRangeDist
 	RETURN
 	
 	FLPrevDist: DW 0
@@ -381,6 +402,9 @@ FLNotMaxDone:
 	MaxRangeStart: DW 0
 	MaxRangeEnd: DW 0
 	MaxRangeLength: DW 0
+	MaxRangeMid: DW 0
+	FLTmp: DW 0
+	MaxRangeDist: DW 0
 	
 	
 	
@@ -1162,9 +1186,11 @@ LowNibl:  DW &HF       ; 0000 0000 0000 1111
 OneMeter: DW 961       ; ~1m in 1.04mm units
 HalfMeter: DW 481      ; ~0.5m in 1.04mm units
 HalfFt: DW 146
+Ft1:	  DW 293
 Ft2:      DW 586       ; ~2ft in 1.04mm units
 Ft3:      DW 879
 Ft4:      DW 1172
+Ft5:      DW 1465
 Ft8:	  DW 2344
 Deg90:    DW 90        ; 90 degrees in odometer units
 Deg180:   DW 180       ; 180
