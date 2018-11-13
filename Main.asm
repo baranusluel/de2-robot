@@ -121,24 +121,40 @@ Main:
 	;CALL WaitForRotate
 	
 	OUT RESETPOS
+	LOADI 0
+	Store DTheta
 	LOAD FMid
 	STORE DVel
 	
-GoToWall:
-	LOADI 0
-	Store DTheta ; Probably not necessary?
-	; Have it move away if closer than 4ft
-	IN XPOS
-	SUB MaxRangeDist
+	LOAD Mask3
+	OR Mask2
+	OUT SONAREN
+	
+GoToWall: IN XPOS
 	ADD Ft3
+	SUB MaxRangeDist
+	JPOS ReachedFirstWall
+	IN DIST3
+	JNEG FirstCheckSonar2
+	SUB Ft3
+	JNEG ReachedFirstWall
+FirstCheckSonar2: IN DIST2
 	JNEG GoToWall
+	SUB Ft3
+	JNEG ReachedFirstWall
+	JUMP GoToWall
+	
+ReachedFirstWall:	
 	;LOADI -50	; Reverse velocity for faster stopping?
 	;STORE DVel
 	;CALL Wait1
+	
+	; Got to wall, stop
 	LOADI 0
 	STORE DVel
 	Store DTheta
 	
+	; 2nd 360 scan
 	CLI    &B0010
 	CALL   AcquireData
 	LOADI  0
@@ -161,6 +177,7 @@ GoToWall:
 	LOAD Mask3
 	OR Mask2
 	OR Mask5
+	; TODO: Use sensors 1 & 4 for emergency stop/recovery interrupt?
 	OUT  SONAREN
 	
 	OUT RESETPOS
