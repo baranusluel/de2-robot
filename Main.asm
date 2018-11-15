@@ -92,26 +92,12 @@ Main:
 	
 	CALL Wait1
 	
-	CALL FindLongest								;<--- TODO: TEST
-	;LOAD MaxRangeStart								;<--- TODO: TEST
-	;OUT SSEG2
-	;STORE DTheta									;<--- TODO: TEST
-	;CALL WaitForRotate								;<--- TODO: TEST
-	;LOAD MaxRangeEnd								;<--- TODO: TEST
-	;OUT SSEG2
-	;STORE DTheta									;<--- TODO: TEST
-	;CALL WaitForRotate								;<--- TODO: TEST
-	;LOAD MaxRangeStart								;<--- TODO: TEST
-	;ADD MaxRangeEnd								;<--- TODO: TEST
-	;SHIFT -1										;<--- TODO: TEST
+	CALL FindLongest
 	LOAD MaxRangeMid
 	OUT SSEG2
-	STORE DTheta									;<--- TODO: TEST
-	CALL WaitForRotate								;<--- TODO: TEST
+	STORE DTheta
+	CALL WaitForRotate
 	
-	;JUMP InfLoop
-	
-
 	; FindClosest returns the angle to the closest object
 	;CALL   FindClosest
 	;OUT    SSEG2       ; useful debugging info
@@ -123,7 +109,7 @@ Main:
 	OUT RESETPOS
 	LOADI 0
 	Store DTheta
-	LOAD FMid
+	LOAD FFastMid
 	STORE DVel
 	
 	LOAD Mask3
@@ -177,13 +163,14 @@ ReachedFirstWall:
 	LOAD Mask3
 	OR Mask2
 	OR Mask5
+	OR Mask0
 	; TODO: Use sensors 1 & 4 for emergency stop/recovery interrupt?
 	OUT  SONAREN
 	
 	OUT RESETPOS
 	LOADI 0
 	STORE DTheta
-	Load FMid
+	Load FFastMid
 	Store DVel
 	
 MoveByWall: IN DIST3
@@ -199,16 +186,18 @@ CheckSonar2: IN DIST2
 	
 	
 RightWall: IN DIST5
-	;OUT SSEG2
+	OUT SSEG2
 	STORE CurrDist
 	; Handle somehow if DIST5 is 7FFF
     ; It means robot has large angle error. Wiggle?
     
-    CALL GetWiggleAngle								;<--- TODO: TEST
-    STORE DTheta										;<--- TODO: TEST
-    
-	JNEG MoveByWall
+    ;LOAD CurrDist
+	JPOS NoWiggle
 	
+	CALL GetWiggleAngle
+    STORE DTheta
+	
+NoWiggle:
     ; TRIGGER option 1: Check for   4 ft -> 8 ft
 	;SUB Ft8
 	;CALL Abs
@@ -222,6 +211,7 @@ RightWall: IN DIST5
 	;JPOS RightWallAdjust
 
     ; TRIGGER option 2: Check for   x ft -> x + 4 ft
+    ; TODO: use left sonar to avoid false-positive finishes
     LOAD CurrDist
     SUB PrevDist
     SUB Ft4
@@ -229,13 +219,19 @@ RightWall: IN DIST5
     OUT SSEG2
     ;SUB HalfFt
     SUB Ft1
-    JNEG Finish
+    JPOS RightWallAdjust
+    IN DIST0
+    JNEG RightWallAdjust
+    SUB Ft16
+    JNEG RightWallAdjust
+    JUMP Finish
 	
-RightWallAdjust: LOADI 10
+    ; TODO: Find better way of error correction than hard-coded max degree cap
+RightWallAdjust: LOADI 20
 	STORE MaxVal ; Max cap value for angle adjustment
     LOAD CurrDist
 	STORE PrevDist ; Put CurrDist in PrevDist
-	SUB Ft3
+	SUB Ft2Half
 	Call NEG
 	SHIFT -4
 	CALL CapValue
@@ -243,8 +239,8 @@ RightWallAdjust: LOADI 10
 	
 	JPOS MoveByWall									;<--- TODO: TEST
 	JNEG MoveByWall									;<--- TODO: TEST
-	CALL GetWiggleAngle								;<--- TODO: TEST
-    STORE DTheta										;<--- TODO: TEST
+	;CALL GetWiggleAngle								;<--- TODO: TEST
+    ;STORE DTheta										;<--- TODO: TEST
 
 	JUMP MoveByWall
 	
@@ -259,7 +255,7 @@ ReachedWall: LOADI 0
 	STORE DTheta
 	CALL WaitForRotate
 	
-	Load FMid
+	Load FFastMid
 	Store DVel
 	
 	OUT RESETPOS
@@ -268,7 +264,7 @@ ReachedWall: LOADI 0
 	
 	JUMP MoveByWall
 	
-
+	
 Finish: Call WaitHalfSec
 	LOADI 0
 	STORE DVel
@@ -282,31 +278,49 @@ Finish: Call WaitHalfSec
 	OUT RESETPOS
 	LOADI 0
 	STORE DTheta	
-	LOAD FMid
+	LOAD FFastMid
 	STORE DVel
 
 WaitForFinish: IN XPOS
 	SUB Ft5
+	JPOS FinishStop
+	IN DIST3
+	JNEG CheckSonar2Finish
+	SUB Ft2
+	JNEG FinishStop
+CheckSonar2Finish: IN DIST2
 	JNEG WaitForFinish
+	SUB Ft2
+	JPOS WaitForFinish
 
-	LOADI 0
+FinishStop:	LOADI 0
 	STORE DVel
-InfLoop: 
+InfLoop:
+	LOADI  &H230
+	OUT    BEEP        ; start beep sound
+	LOADI &HF0F0	
+	OUT LEDS
+	OUT XLEDS
+	CALL WaitHalfSec
+	LOADI  &H230
+	OUT    BEEP        ; start beep sound
+	LOADI &H0F0F
+	OUT LEDS
+	OUT XLEDS
+	CALL WaitHalfSec
 	JUMP   InfLoop
 	; note that the movement API will still be running during this
 	; infinite loop, because it uses the timer interrupt.
 	
 	
 	
+	
 ; Wait for a rotation to complete
 WaitForRotate: CALL GetThetaErr
 	CALL Abs
-	ADDI -1 ; Can we make this smaller? Probably don't need to, given the extra 1 second wait
+	ADDI -2
 	JPOS WaitForRotate
-	;JPOS WaitForRotate
-	;JNEG WaitForRotate
 	CALL Wait1
-	;CALL WaitHalfSec
 	RETURN
 	
 ; Gets an intentional error angle ("wiggle angle") from -2 to 2
@@ -565,13 +579,13 @@ CTimer_ISR:
 DTheta:    DW 0
 DVel:      DW 0
 ControlMovement:
-	LOADI  50          ; used for the CapValue subroutine
+	LOADI  80          ; used for the CapValue subroutine ; NOTE: USED TO BE LOADI 50
 	STORE  MaxVal
 	CALL   GetThetaErr ; get the heading error
 	; A simple way to get a decent velocity value
 	; for turning is to multiply the angular error by 4
 	; and add ~50.
-	SHIFT  1			; USED TO BE:	SHIFT 2
+	SHIFT  1			; NOTE: was originally SHIFT 1
 	STORE  CMAErr      ; hold temporarily
 	SHIFT  2           ; multiply by another 4
 	CALL   CapValue    ; get a +/- max of 50
@@ -1205,10 +1219,13 @@ HalfMeter: DW 481      ; ~0.5m in 1.04mm units
 HalfFt: DW 146
 Ft1:	  DW 293
 Ft2:      DW 586       ; ~2ft in 1.04mm units
+Ft2Half:  DW 732
 Ft3:      DW 879
+Ft3Half:  DW 1025
 Ft4:      DW 1172
 Ft5:      DW 1465
 Ft8:	  DW 2344
+Ft16:	  DW 4688
 Deg90:    DW 90        ; 90 degrees in odometer units
 Deg180:   DW 180       ; 180
 Deg270:   DW 270       ; 270
@@ -1217,6 +1234,7 @@ FSlow:    DW 100       ; 100 is about the lowest velocity value that will move
 RSlow:    DW -100
 FMid:     DW 350       ; 350 is a medium speed
 RMid:     DW -350
+FFastMid: DW 420
 FFast:    DW 500       ; 500 is almost max speed (511 is max)
 RFast:    DW -500
 
