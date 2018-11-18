@@ -191,11 +191,12 @@ RightWall: IN DIST5
 	; Handle somehow if DIST5 is 7FFF
     ; It means robot has large angle error. Wiggle?
     
-    ;LOAD CurrDist
 	JPOS NoWiggle
 	
+	; TODO: Test that this works (should wiggle when inf dist)
 	CALL GetWiggleAngle
     STORE DTheta
+    JUMP MoveByWall
 	
 NoWiggle:
     ; TRIGGER option 1: Check for   4 ft -> 8 ft
@@ -203,7 +204,6 @@ NoWiggle:
 	;CALL Abs
 	;SUB HalfFt
 	;JPOS RightWallAdjust
-	
 	;LOAD PrevDist
 	;SUB Ft4
 	;Call Abs
@@ -220,11 +220,12 @@ NoWiggle:
     ;SUB HalfFt
     SUB Ft1
     JPOS RightWallAdjust
+    ; Trigger condition on right side was met -- check left side
     IN DIST0
-    JNEG RightWallAdjust
-    SUB Ft16
-    JNEG RightWallAdjust
-    JUMP Finish
+    JNEG Finish ; If left didn't pick anything up, still trigger -- don't want false-negatives
+    SUB Ft13
+    JNEG RightWallAdjust ; If left was left than 13 ft, is false-positive, don't trigger
+    JUMP Finish ; Trigger finish
 	
     ; TODO: Find better way of error correction than hard-coded max degree cap
 RightWallAdjust: LOADI 20
@@ -585,7 +586,7 @@ ControlMovement:
 	; A simple way to get a decent velocity value
 	; for turning is to multiply the angular error by 4
 	; and add ~50.
-	SHIFT  1			; NOTE: was originally SHIFT 1
+	SHIFT  1			; NOTE: was originally SHIFT 2
 	STORE  CMAErr      ; hold temporarily
 	SHIFT  2           ; multiply by another 4
 	CALL   CapValue    ; get a +/- max of 50
@@ -1225,6 +1226,7 @@ Ft3Half:  DW 1025
 Ft4:      DW 1172
 Ft5:      DW 1465
 Ft8:	  DW 2344
+Ft13:	  DW 3809
 Ft16:	  DW 4688
 Deg90:    DW 90        ; 90 degrees in odometer units
 Deg180:   DW 180       ; 180
