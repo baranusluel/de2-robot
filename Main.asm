@@ -158,8 +158,6 @@ ReachedFirstWall:
 
 	CALL WaitForRotate
 	
-	; Is an issue when it goes head-on at a wall
-	; Wiggle while moving?
 	LOAD Mask3
 	OR Mask2
 	OR Mask5
@@ -188,8 +186,6 @@ CheckSonar2: IN DIST2
 RightWall: IN DIST5
 	OUT SSEG2
 	STORE CurrDist
-	; Handle somehow if DIST5 is 7FFF
-    ; It means robot has large angle error. Wiggle?
     
 	JPOS NoWiggle
 	
@@ -199,19 +195,7 @@ RightWall: IN DIST5
     JUMP MoveByWall
 	
 NoWiggle:
-    ; TRIGGER option 1: Check for   4 ft -> 8 ft
-	;SUB Ft8
-	;CALL Abs
-	;SUB HalfFt
-	;JPOS RightWallAdjust
-	;LOAD PrevDist
-	;SUB Ft4
-	;Call Abs
-	;SUB HalfFt
-	;JPOS RightWallAdjust
-
-    ; TRIGGER option 2: Check for   x ft -> x + 4 ft
-    ; TODO: use left sonar to avoid false-positive finishes
+    ; TRIGGER: Check for   x ft -> x + 4 ft
     LOAD CurrDist
     SUB PrevDist
     SUB Ft4
@@ -221,6 +205,7 @@ NoWiggle:
     SUB Ft1
     JPOS RightWallAdjust
     ; Trigger condition on right side was met -- check left side
+    ; TODO: Test if false-positive detection with left sonar works
     IN DIST0
     JNEG Finish ; If left didn't pick anything up, still trigger -- don't want false-negatives
     SUB Ft13
@@ -238,10 +223,10 @@ RightWallAdjust: LOADI 20
 	CALL CapValue
 	STORE DTheta
 	
-	JPOS MoveByWall									;<--- TODO: TEST
-	JNEG MoveByWall									;<--- TODO: TEST
-	;CALL GetWiggleAngle								;<--- TODO: TEST
-    ;STORE DTheta										;<--- TODO: TEST
+	JPOS MoveByWall
+	JNEG MoveByWall
+	;CALL GetWiggleAngle
+    ;STORE DTheta
 
 	JUMP MoveByWall
 	
@@ -334,6 +319,7 @@ GetWiggleAngle: IN Timer
 	LOADI 0
 	STORE WiggleAngle
 	RETURN
+	; TODO: Try adding varying wiggle magnitude, increasing over time?
 WiggleN: LOADI -2
 	STORE WiggleAngle
 	RETURN
