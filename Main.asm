@@ -31,6 +31,9 @@ Init:
 	CALL   BattCheck   ; Get battery voltage (and end if too low).
 	OUT    LCD         ; Display battery voltage (hex, tenths of volts)
 	
+	LOADI  &HFFFF
+	STORE  PrevDist
+	
 WaitForSafety:
 	; Check for PB1 to initiate data transmission
 	IN XIO
@@ -333,6 +336,11 @@ WiggleP: LOADI 2
 ; - Make it recognize ranges going across 360-0
 ; - Measure flatness/deviation of ranges to decide between similarly wide ranges
 FindLongest:
+	; reset needed values to zero
+	LOAD Zero
+	STORE FLIteration
+	STORE MaxRangeLength
+	; start FL routine
 	LOADI DataArray ; get the base address
 	STORE ArrayIndex
 	STORE CurrRangeStart
@@ -345,45 +353,36 @@ FLLoop:
 	ADDI 1
 	STORE ArrayIndex ; move to next entry
 	XOR EndIndex ; compare with end index
-	JZERO FLDone
+	JZERO FLCheckEndLimit
+FLLoopInner:
 	ILOAD ArrayIndex ; get the data
-	;JNEG FLNotMax ; if infinite dist, take as end of a range that isn't max range length
+	; check for inf dist
 	SUB MaxDistThreshold
 	JPOS FLNotOnWall ; if infinite dist, skip
 	ILOAD ArrayIndex ; get the data again
 	SUB FLPrevDist ; subtract previous dist
 	CALL Abs ; get absolute error
 	SUB AdjacentThreshold ; using half foot as max error between adjacent points (too much?)
-	JNEG FLAdjacent
+	JNEG FLNextPoint
 	; Points not on same wall
-FLNotOnWall:	LOAD ArrayIndex
-	STORE CurrRangeEnd
-	SUB CurrRangeStart
-	STORE CurrRangeLength
-	SUB MaxRangeLength
-	JNEG FLNotMax
-	; This range was the longest one
-	LOAD CurrRangeStart ; Set max values to curr values
-	STORE MaxRangeStart
-	LOAD CurrRangeEnd
-	STORE MaxRangeEnd
-	LOAD CurrRangeLength
-	STORE MaxRangeLength
-FLNotMax: LOAD ArrayIndex ; Get index of most recent point, which wasn't on wall
-	STORE CurrRangeStart ; Start new range here
-FLAdjacent:
-	ILOAD ArrayIndex ; get the data again
-	STORE FLPrevDist ; store as prev dist
-	JUMP FLLoop
-	
-FLDone:
-	; Check the very last range, which ends at the last index
+FLNotOnWall:
 	LOAD ArrayIndex
 	STORE CurrRangeEnd
 	SUB CurrRangeStart
 	STORE CurrRangeLength
+	JPOS FLLengthNotNeg
+	JZERO FLLengthNotNeg
+	; length was negative, so range crosses over from first to second iteration
+	LOAD CurrRangeStart
+	ADDI -360
+	STORE CurrRangeStart
+	LOAD CurrRangeLength
+	ADDI 360
+	STORE CurrRangeLength
+FLLengthNotNeg:	
 	SUB MaxRangeLength
-	JNEG FLNotMaxDone
+	JNEG FLNewStart
+	JZERO FLNewStart
 	; This range was the longest one
 	LOAD CurrRangeStart ; Set max values to curr values
 	STORE MaxRangeStart
@@ -391,7 +390,26 @@ FLDone:
 	STORE MaxRangeEnd
 	LOAD CurrRangeLength
 	STORE MaxRangeLength
-FLNotMaxDone:	
+FLNewStart:
+	LOAD ArrayIndex ; Get index of most recent point, which wasn't on wall
+	STORE CurrRangeStart ; Start new range here
+FLNextPoint:
+	ILOAD ArrayIndex ; get the data again
+	STORE FLPrevDist ; store as prev dist
+	JUMP FLLoop
+	
+	
+FLCheckEndLimit:
+	LOAD FLIteration
+	JPOS FLDone
+	ADDI 1
+	STORE FLIteration ; increment iteration count
+	LOADI DataArray ; get the base address
+	STORE ArrayIndex ; set index back to beginning for second iteration
+	JUMP FLLoopInner
+	
+	
+FLDone:
 	; Need to convert indices to angles
 	LOADI DataArray	; base address
 	SUB MaxRangeStart
@@ -409,10 +427,19 @@ FLNotMaxDone:
 	LOADI DataArray ; base address
 	ADD MaxRangeMid ; index array at mid of max range
 	STORE FLtmp
+	LOAD MaxRangeMid
+	JPOS FLMidNotNeg
+	JZERO FLMidNotNeg
+	; Midpoint angle was negative
+	LOAD FLtmp
+	ADDI 360
+	STORE FLtmp ; add 360 to index to make it a valid index
+FLMidNotNeg:
 	ILOAD FLtmp
 	STORE MaxRangeDist
 	RETURN
 	
+	FLIteration: DW 0
 	FLPrevDist: DW 0
 	CurrRangeStart: DW 0
 	CurrRangeEnd: DW 0
