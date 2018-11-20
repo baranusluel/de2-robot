@@ -101,14 +101,6 @@ Main:
 	STORE DTheta
 	CALL WaitForRotate
 	
-	; FindClosest returns the angle to the closest object
-	;CALL   FindClosest
-	;OUT    SSEG2       ; useful debugging info
-	; To turn to that angle using the movement API, just store
-	; the angle into the "desired theta" variable.
-	;STORE  DTheta
-	;CALL WaitForRotate
-	
 	OUT RESETPOS
 	LOADI 0
 	Store DTheta
@@ -134,10 +126,6 @@ FirstCheckSonar2: IN DIST2
 	JUMP GoToWall
 	
 ReachedFirstWall:	
-	;LOADI -50	; Reverse velocity for faster stopping?
-	;STORE DVel
-	;CALL Wait1
-	
 	; Got to wall, stop
 	LOADI 0
 	STORE DVel
@@ -165,7 +153,8 @@ ReachedFirstWall:
 	OR Mask2
 	OR Mask5
 	OR Mask0
-	; TODO: Use sensors 1 & 4 for emergency stop/recovery interrupt?
+	OR Mask1
+	OR Mask4
 	OUT  SONAREN
 	
 	OUT RESETPOS
@@ -181,20 +170,51 @@ MoveByWall: IN DIST3
 	JNEG ReachedWall
 CheckSonar2: IN DIST2
 	;OUT SSEG1
-	JNEG RightWall
+	JNEG CheckLeftCollide
 	SUB Ft3
 	JNEG ReachedWall
+CheckLeftCollide: IN DIST1
+	JNEG CheckRightCollide
+	SUB HalfFt
+	JPOS CheckRightCollide
+	LOADI 0
+	STORE DVel
+	LOADI -45
+	STORE DTheta
+	CALL WaitForRotate
+	OUT RESETPOS
+	LOADI 0
+	STORE DTheta
+	Load FFastMid
+	Store DVel
+CheckRightCollide: IN DIST4
+	JNEG RightWall
+	SUB HalfFt
+	JPOS RightWall
+	LOADI 0
+	STORE DVel
+	LOADI 45
+	STORE DTheta
+	CALL WaitForRotate
+	OUT RESETPOS
+	LOADI 0
+	STORE DTheta
+	Load FFastMid
+	Store DVel
 	
 	
 RightWall: IN DIST5
 	OUT SSEG2
 	STORE CurrDist
     
-	JPOS NoWiggle
+	JNEG Wiggle
+	JUMP NoWiggle
 	
 	; TODO: Test that this works (should wiggle when inf dist)
-	CALL GetWiggleAngle
+Wiggle:	CALL GetWiggleAngle
     STORE DTheta
+    LOADI &H1010
+    OUT SSEG1
     JUMP MoveByWall
 	
 NoWiggle:
@@ -216,18 +236,23 @@ NoWiggle:
     JUMP Finish ; Trigger finish
 	
     ; TODO: Find better way of error correction than hard-coded max degree cap
-RightWallAdjust: LOADI 20
+RightWallAdjust: LOADI 15
 	STORE MaxVal ; Max cap value for angle adjustment
     LOAD CurrDist
 	STORE PrevDist ; Put CurrDist in PrevDist
+	
+	SUB Six
+	JPOS MoveByWall
+	
+	LOAD CurrDist
 	SUB Ft2Half
 	Call NEG
 	SHIFT -4
 	CALL CapValue
 	STORE DTheta
 	
-	JPOS MoveByWall
-	JNEG MoveByWall
+	;JPOS MoveByWall
+	;JNEG MoveByWall
 	;CALL GetWiggleAngle
     ;STORE DTheta
 
