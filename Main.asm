@@ -208,6 +208,9 @@ RightWall: IN DIST5
 	STORE CurrDist
     
 	JNEG Wiggle
+	; check for inf dist
+	SUB MaxDistThreshold
+	JPOS Wiggle
 	JUMP NoWiggle
 	
 	; TODO: Test that this works (should wiggle when inf dist)
@@ -241,7 +244,7 @@ RightWallAdjust: LOADI 15
     LOAD CurrDist
 	STORE PrevDist ; Put CurrDist in PrevDist
 	
-	SUB Six
+	SUB Ft6
 	JPOS MoveByWall
 	
 	LOAD CurrDist
@@ -1219,7 +1222,7 @@ PrevDist: DW &HFFFF
 CurrDist: DW 0
 WiggleAngle: DW 0
 AdjacentThreshold: DW 40
-MaxDistThreshold: DW 3000
+MaxDistThreshold: DW 15000
 
 ;***************************************************************
 ;* Constants
@@ -1263,6 +1266,7 @@ Ft3:      DW 879
 Ft3Half:  DW 1025
 Ft4:      DW 1172
 Ft5:      DW 1465
+Ft6:	  DW 1758
 Ft8:	  DW 2344
 Ft13:	  DW 3809
 Ft16:	  DW 4688
