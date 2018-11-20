@@ -204,7 +204,7 @@ CheckRightCollide: IN DIST4
 	
 	
 RightWall: IN DIST5
-	OUT SSEG2
+	;OUT SSEG2
 	STORE CurrDist
     
 	JNEG Wiggle
@@ -218,6 +218,10 @@ Wiggle:	CALL GetWiggleAngle
     STORE DTheta
     LOADI &H1010
     OUT SSEG1
+    LOADI 0
+    STORE IsCorrectCounter
+    LOAD CurrDist
+	STORE PrevDist ; Put CurrDist in PrevDist
     JUMP MoveByWall
 	
 NoWiggle:
@@ -254,21 +258,35 @@ RightWallAdjust: LOADI 15
 	CALL CapValue
 	STORE DTheta
 	
-	;JPOS MoveByWall
-	;JNEG MoveByWall
+	JPOS ResetCorrectCounter
+	JNEG ResetCorrectCounter
+	
+	LOAD IsCorrectCounter
+	ADDI 1
+	STORE IsCorrectCounter
+	ADDI -20
+	JNEG MoveByWall
+	OUT ResetPos
 	;CALL GetWiggleAngle
     ;STORE DTheta
 
+ResetCorrectCounter:
+	LOADI 0
+	STORE IsCorrectCounter
 	JUMP MoveByWall
+	
+IsCorrectCounter: DW 0
 	
 	
 ReachedWall: LOADI 0
 	Store DVel
+	STORE IsCorrectCounter
 	
 	CALL Wait1
 	
-	Load DTheta ; Should this be DTheta, THETA, or 0?
-	ADD Deg90
+	;Load DTheta ; Should this be DTheta, THETA, or 0?
+	;ADD Deg90
+	LOAD Deg90
 	STORE DTheta
 	CALL WaitForRotate
 	
@@ -361,7 +379,6 @@ WiggleP: LOADI 2
 	
 ; Find the longest interval of adjacent points, making up a wall
 ; TODO:
-; - Make it recognize ranges going across 360-0
 ; - Measure flatness/deviation of ranges to decide between similarly wide ranges
 FindLongest:
 	; reset needed values to zero
@@ -621,7 +638,7 @@ CTimer_ISR:
 DTheta:    DW 0
 DVel:      DW 0
 ControlMovement:
-	LOADI  80          ; used for the CapValue subroutine ; NOTE: USED TO BE LOADI 50
+	LOADI  50          ; used for the CapValue subroutine ; NOTE: USED TO BE LOADI 50
 	STORE  MaxVal
 	CALL   GetThetaErr ; get the heading error
 	; A simple way to get a decent velocity value
