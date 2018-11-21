@@ -160,8 +160,10 @@ ReachedFirstWall:
 	OUT RESETPOS
 	LOADI 0
 	STORE DTheta
-	Load FFastMid
+	Load FMid
 	Store DVel
+	
+	OUT Timer
 	
 MoveByWall: IN DIST3
 	;OUT SSEG2
@@ -185,7 +187,7 @@ CheckLeftCollide: IN DIST1
 	OUT RESETPOS
 	LOADI 0
 	STORE DTheta
-	Load FFastMid
+	Load FMid
 	Store DVel
 CheckRightCollide: IN DIST4
 	JNEG RightWall
@@ -199,11 +201,18 @@ CheckRightCollide: IN DIST4
 	OUT RESETPOS
 	LOADI 0
 	STORE DTheta
-	Load FFastMid
+	Load FMid
 	Store DVel
 	
 	
-RightWall: IN DIST5
+RightWall:
+	IN Timer
+	ADDI -20
+	JNEG RightWallSlow
+	LOAD FFastMid
+	STORE DVel
+
+RightWallSlow:	IN DIST5
 	;OUT SSEG2
 	STORE CurrDist
     
@@ -225,6 +234,9 @@ Wiggle:	CALL GetWiggleAngle
     JUMP MoveByWall
 	
 NoWiggle:
+	; Indicate no wiggle
+	LOADI &HAAAA
+    OUT SSEG1
     ; TRIGGER: Check for   x ft -> x + 4 ft
     LOAD CurrDist
     SUB PrevDist
@@ -290,7 +302,9 @@ ReachedWall: LOADI 0
 	STORE DTheta
 	CALL WaitForRotate
 	
-	Load FFastMid
+	OUT Timer
+	
+	Load FMid
 	Store DVel
 	
 	OUT RESETPOS
